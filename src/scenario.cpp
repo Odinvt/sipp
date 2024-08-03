@@ -236,30 +236,6 @@ double get_double(const char *ptr, const char *what)
     return ret;
 }
 
-#ifdef PCAPPLAY
-/* If the value is enclosed in [brackets], it is assumed to be
- * a command-line supplied keyword value (-key). */
-static char* xp_get_keyword_value(const char *name)
-{
-    const char* ptr = xp_get_value(name);
-    size_t len;
-    char keyword[KEYWORD_SIZE + 1];
-
-    if (ptr && ptr[0] == '[' && (len = strlen(ptr)) && ptr[len - 1] == ']') {
-        memcpy(keyword, ptr + 1, len - 2);
-
-        auto gen = generic.find(keyword);
-        if (gen != generic.end()) {
-            return strdup((*gen).second.c_str());
-        }
-
-        ERROR("%s \"%s\" looks like a keyword value, but keyword not supplied!", name, ptr);
-    }
-
-    return ptr ? strdup(ptr) : nullptr;
-}
-#endif
-
 static char* xp_get_string(const char *name, const char *what)
 {
     const char *ptr;
